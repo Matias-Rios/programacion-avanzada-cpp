@@ -31,7 +31,7 @@ public:
     }
 };
 
-std::ostream& operator<<(std::ostream& os, NumeroComplejo c) {
+std::ostream& operator<<(std::ostream& os, NumeroComplejo c) {  //operador para que imprima
     os<<c.getReal()<<"+"<<c.getImaginario()<<"i";
     return os;
 }
