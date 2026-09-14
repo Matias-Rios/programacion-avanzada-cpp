@@ -57,7 +57,7 @@ class Motor {
         }
 };
 
-class Carro: public Vehiculo, public Motor {
+class Carro: public Vehiculo {
     private:
     Motor motor;
     public:
