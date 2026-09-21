@@ -1,3 +1,4 @@
+
 // Ejercicio 1: Animal, Perro y Gato
 //
 // Sin herencia, Perro y Gato repetirían, línea por línea, los mismos
@@ -51,19 +52,19 @@ public:
         std::cout<<"Animal de: "<<edad<<" anios,"<<pesoKg<<"kg"<<std::endl;
     }
 };
-
-class Perro : public Animal {
-public:
-    void ladrar() {
-        std::cout << "Guau!" << std::endl;
-    }
+class Perro: public Animal {
+    public:
+        void ladrar() {
+            std::cout << "Guau!" << std::endl;
+        }
 };
 
-class Gato : public Animal {
-public:
-    void maullar() {
-        std::cout << "Miau!" << std::endl;
-    }
+class Gato: public Animal {
+    public:
+        void maullar() {
+            std::cout << "Miuau!" << std::endl;
+        }
+
 };
 
 int main() {
@@ -74,8 +75,9 @@ int main() {
     p.ladrar();
 
     Gato g;
-    g.setEdad(2.0);
-    g.setPesoKg(4.5);
+    g.setEdad(3);
+    g.setPeso(3);
+    
     g.describir();
     g.maullar();
 
