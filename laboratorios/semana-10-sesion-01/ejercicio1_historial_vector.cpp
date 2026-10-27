@@ -82,4 +82,4 @@ int main() {
     }
     std::cout<<"Total de la semana: "<<total<<std::endl;
     return 0;
-};
+}
