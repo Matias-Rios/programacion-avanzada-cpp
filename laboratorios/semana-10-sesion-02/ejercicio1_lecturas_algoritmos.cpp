@@ -47,6 +47,6 @@ int main() {
     std::cout<<"Dias en 23.0 (lista): "<<vecesEn23_lista<<std::endl;
     // TODO (paso 6): imprime "Suma con 0 como valor inicial: " con
     // std::accumulate(temperaturas.begin(), temperaturas.end(), 0).
-    std::cout<<"Suma con 0 valor inicial: "<<std::accumulate(temperaturas.begin(),temperaturas.end(),0)<<std::endl;
+    std::cout<<"Suma con 0 como valor inicial: "<<std::accumulate(temperaturas.begin(),temperaturas.end(),0)<<std::endl;
     return 0;
 }
