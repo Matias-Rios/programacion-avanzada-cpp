@@ -44,6 +44,55 @@
 
 // TODO: escribe aqui la clase CentroDeImpresion.
 
+class CentroDeImpresion{
+    private:
+    std::map <int,int> impresiones;
+    std::atomic<int> aceptados{0};
+    std::atomic<int> total{0};
+    std::atomic<int> rechazado{0};
+    std::mutex candado;
+    bool cerrado=false;
+    public:
+    bool enviar(int estudiante,int paginas){
+        std::lock_guard guardia(candado);
+        if(cerrado or paginas<=0){
+            return false;
+        }
+        if(impresiones[estudiante]+paginas >100){
+            rechazado++;
+            return false;
+        }
+        impresiones[estudiante]=impresiones[estudiante]+paginas;
+        total.fetch_add(paginas);
+        aceptados++;
+        return true;
+    }
+    void cerrar(){
+        std::lock_guard guardia(candado);
+        cerrado=true;
+    }
+    bool estaCerrado(){
+        std::lock_guard guardia(candado);
+        return cerrado;
+    }
+    int trabajosAceptados(){
+        return aceptados;
+    }
+    int rechazadosPorCuota(){
+        return rechazado;
+    }
+    int paginasTotales(){
+        return total;
+    }
+    int paginasDe(int estudiante){
+    std::lock_guard<std::mutex> guardia(candado);
+    auto it = impresiones.find(estudiante);
+    if (it == impresiones.end()) {
+        return 0;
+    }   
+        return it->second;
+    }
+};
 void computadora(CentroDeImpresion* centro) {
     for (int estudiante = 1; estudiante <= 50; estudiante++) {
         for (int i = 0; i < 10; i++) {
