@@ -31,21 +31,44 @@ public:
     bool pedirTurno(int carnet) {
         // TODO: si el carnet ya esta en enCola, devuelve false. Si no, lo agrega
         // al final de la cola y a enCola, y devuelve true.
+        if(enCola.count(carnet)!=0){
         return false;
+        }
+        cola.push_back(carnet);
+        enCola.insert(carnet);
+        return true;
     }
     bool pedirTurnoUrgente(int carnet) {
         // TODO: igual que pedirTurno, pero lo agrega al principio de la cola.
+        if(enCola.count(carnet)!=0){
         return false;
+        }
+        cola.push_front(carnet);
+        enCola.insert(carnet);
+        return true;
     }
     int atender() {
         // TODO: si la cola esta vacia, devuelve -1. Si no, saca el primero (front
         // y pop_front), lo borra de enCola y lo devuelve.
+        if(cola.empty()){
         return -1;
+        }
+        int turno=cola.front();
+        cola.pop_front();
+        enCola.erase(turno);
+        return turno;
     }
     bool retirar(int carnet) {
         // TODO: recorre la cola con un iterador; si encuentra el carnet, lo borra
         // con erase(it), lo borra de enCola y devuelve true (sin seguir
         // usando ese iterador). Si no esta, devuelve false.
+        for(auto it=cola.begin();it!=cola.end();it++){
+            if(*it==carnet){
+                cola.erase(it);
+                enCola.erase(carnet);
+                return true;
+            }
+        }
         return false;
     }
     int enEspera() {

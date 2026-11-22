@@ -35,3 +35,58 @@
 // Incendio directa, prioridad: 3
 // Intrusion por puntero, aviso: 36
 // Alarma comun por puntero, aviso: 10
+#include <iostream>
+
+
+class Alarma{
+    private:
+    public:
+    virtual ~Alarma(){}
+    virtual int segundosDeAviso(){
+        return 10;
+    }
+    int prioridad(){
+        return 1;
+    }
+
+};
+class AlarmaDeIncendio : public Alarma{
+    private:
+    int pisos;
+    public:
+    AlarmaDeIncendio(int p){
+        pisos=p;
+    }
+    int segundosDeAviso()override{
+        return pisos*15;
+    }
+    int prioridad(){
+        return 3;
+    }
+};
+class AlarmaDeIntrusion : public Alarma{
+    private:
+    int sensores;
+    public:
+    AlarmaDeIntrusion(int s){
+        sensores=s;
+    }
+    int segundosDeAviso() override{
+        return sensores*4;
+    }
+};
+
+int main(){
+    AlarmaDeIncendio AlarmaDeIncencdio(4);
+    AlarmaDeIntrusion AlarmaDeIntrusion(9);
+    Alarma *ptr=&AlarmaDeIncencdio;
+    std::cout<<"Incendio por puntero, aviso: "<<ptr->segundosDeAviso()<<std::endl;
+    std::cout<<"Incendio por puntero, prioridad: "<<ptr->prioridad()<<std::endl;
+    std::cout<<"Incendio directa, prioridad: "<<AlarmaDeIncencdio.prioridad()<<std::endl;
+    ptr=&AlarmaDeIntrusion;
+    std::cout<<"Intrusion por puntero, aviso: "<<ptr->segundosDeAviso()<<std::endl;
+    Alarma Alarma_comun;
+    ptr=&Alarma_comun;
+    std::cout<<"Alarma comun por puntero, aviso: "<<ptr->segundosDeAviso()<<std::endl;
+    return 0;
+}

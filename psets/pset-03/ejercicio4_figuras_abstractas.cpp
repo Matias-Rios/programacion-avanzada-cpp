@@ -22,9 +22,7 @@ class Figura {
 public:
     virtual ~Figura() {}
     // TODO: convierte area en una funcion virtual pura (sin cuerpo).
-    virtual double area() {
-        return 0;
-    }
+    virtual double area() =0;
 };
 
 class Rectangulo : public Figura {
@@ -34,12 +32,22 @@ private:
 public:
     Rectangulo(double b, double h) {
         // TODO: si b o h es negativo, guarda 0 en ese lado; si no, guarda el valor.
-        base = 0;
-        altura = 0;
+        if(b<0){
+            base=0;
+        }
+        else{
+            base=b;
+        }
+        if(h<0){
+            altura=0;
+        }
+        else{
+            altura=h;
+        }
     }
     double area() override {
         // TODO: devuelve base * altura.
-        return 0;
+        return base*altura;
     }
 };
 
@@ -50,22 +58,38 @@ private:
 public:
     Triangulo(double b, double h) {
         // TODO: igual que en Rectangulo.
-        base = 0;
-        altura = 0;
+        if(b<0){
+            base=0;
+        }
+        else{
+            base=b;
+        }
+        if(h<0){
+            altura=0;
+        }
+        else{
+            altura=h;
+        }
     }
     double area() override {
         // TODO: devuelve base * altura / 2.
-        return 0;
+        return base*altura/2;
     }
 };
 
 void imprimirArea(Figura* figura) {
     // TODO: imprime "Area: " seguido de figura->area() y un salto de linea.
+    std::cout<<"Area: "<<figura->area()<<std::endl;
 }
 
 Figura* mayorArea(Figura* a, Figura* b) {
     // TODO: devuelve el puntero a la figura de mayor area; si son iguales, a.
+    if(a->area()< b->area()){
+        return b;
+    }
+    else{
     return a;
+    }
 }
 
 int main() {

@@ -21,7 +21,7 @@
 // - nivel() devuelve el brillo; estaEncendido(), encendida.
 //
 // Una funcion libre void subirAlMaximo(Regulable* r) que llama subir()
-// hasta que nivel() sea 10, y una funcion libre void apagarSiEstaEncendido(
+// hasta que nivel() sea 10, y una funcion libre void apagarSiEstaEncendido(    
 // Encendible* e) que apaga solo si esta encendido.
 //
 // En main(): crea una LamparaInteligente y dos punteros a ella, uno
@@ -43,3 +43,92 @@
 // Nivel tras bajar: 9
 // Encendida al final: false
 // Nivel al final: 0
+
+#include <iostream>
+
+class Encendible{
+    public:
+    virtual ~Encendible(){}
+    virtual void encender()=0;
+    virtual void apagar()=0;
+    virtual bool estaEncendido()=0;
+};
+class Regulable{
+    public:
+    virtual ~Regulable(){}
+    virtual int nivel()=0;
+    virtual void subir()=0;
+    virtual void bajar()=0;
+};
+
+class LamparaInteligente : public Encendible ,public Regulable {
+    private:
+    bool encendida;
+    int brillo;
+    public:
+    LamparaInteligente(){
+        encendida=false;
+        brillo=0;
+    }
+    void encender() override{
+        encendida=true;
+        if(brillo==0){
+            brillo=5;
+        }
+    }
+    void apagar() override{
+        encendida=false;
+        brillo=0;
+    }
+    void subir() override{
+        if(encendida){
+            if(brillo<=9){
+                brillo=brillo+1;
+            }
+        }
+    }
+    void bajar() override{
+        if(encendida){
+            if(brillo>1){
+                brillo=brillo-1;
+            }
+        }
+    }
+    int nivel() override{
+        return brillo;
+    }
+    bool estaEncendido()override{
+        return encendida;
+    }
+};
+void subirAlMaximo(Regulable* r) {
+    while (r->nivel() < 10) {
+        r->subir();
+    }
+}
+void apagarSiEstaEncendido(Encendible* e){
+    if(e->estaEncendido()){
+        e->apagar();
+    }
+}
+
+int main() {
+    LamparaInteligente Lampara;
+    Encendible* ptr1 = &Lampara;
+    Regulable* ptr2 = &Lampara;
+    std::cout << std::boolalpha;
+    std::cout << "Encendida al inicio: " << ptr1->estaEncendido() << std::endl;
+    ptr2->subir();
+    std::cout << "Nivel tras subir apagada: " << ptr2->nivel() << std::endl;
+    ptr1->encender();
+    std::cout << "Nivel al encender: " << ptr2->nivel() << std::endl;
+    subirAlMaximo(ptr2);
+    std::cout << "Nivel al maximo: " << ptr2->nivel() << std::endl;
+    ptr2->bajar();
+    std::cout << "Nivel tras bajar: " << ptr2->nivel() << std::endl;
+    apagarSiEstaEncendido(ptr1);
+    std::cout << "Encendida al final: " << ptr1->estaEncendido() << std::endl;
+    std::cout << "Nivel al final: " << ptr2->nivel() << std::endl;
+
+    return 0;
+}

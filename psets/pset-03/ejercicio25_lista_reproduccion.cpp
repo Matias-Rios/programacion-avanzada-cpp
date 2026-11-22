@@ -34,3 +34,69 @@
 // La 33 ya sono: 0
 // Suena: 22
 // Suena: 33
+
+#include <iostream>
+#include <list>
+#include <set>
+class ListaDeReproduccion{
+    private:
+    std::list<int> pendientes;
+    std::set<int> reproducidas;
+    public:
+    void agregarAlFinal(int id){
+        pendientes.push_back(id);
+    }
+    void agregarSiguiente(int id){
+        pendientes.push_front(id);
+    }
+    int reproducir(){
+        if(pendientes.empty()){
+            return -1;
+        }
+        int id=pendientes.front();
+        reproducidas.insert(id);
+        pendientes.pop_front();
+        return id;
+    }
+    bool yaSono(int id){
+        if(reproducidas.find(id)==reproducidas.end()){
+            return false;
+        }
+        return true;
+    }
+    int quitarTodas(int id){
+        int contador=0;
+        for(auto it=pendientes.begin(); it!=pendientes.end();){
+            if(*it==id){
+                it=pendientes.erase(it);
+                contador++;
+            }
+            else{
+                it++;
+            }
+        }
+        return contador;
+    }
+   int pendientesPorSonar(){
+    return pendientes.size();
+   }
+};
+
+int main(){
+    ListaDeReproduccion ListaDeReproduccion;
+    ListaDeReproduccion.agregarAlFinal(11);
+    ListaDeReproduccion.agregarAlFinal(22);
+    ListaDeReproduccion.agregarAlFinal(11);
+    ListaDeReproduccion.agregarAlFinal(33);
+    ListaDeReproduccion.agregarSiguiente(44);
+    std::cout<<"Suena: "<<ListaDeReproduccion.reproducir()<<std::endl;
+    std::cout<<"Suena: "<<ListaDeReproduccion.reproducir()<<std::endl;
+    std::cout<<"Quitadas: "<<ListaDeReproduccion.quitarTodas(11)<<std::endl;;
+    std::cout<<"Pendientes: "<<ListaDeReproduccion.pendientesPorSonar()<<std::endl;
+    std::cout<<"La 44 ya sono: "<<ListaDeReproduccion.yaSono(44)<<std::endl;
+    std::cout<<"La 33 ya sono: "<<ListaDeReproduccion.yaSono(33)<<std::endl;
+    std::cout<<"Suena: " << ListaDeReproduccion.reproducir()<<std::endl;
+    std::cout<<"Suena: "<<ListaDeReproduccion.reproducir()<<std::endl;
+
+    return 0;
+}

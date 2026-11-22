@@ -40,3 +40,122 @@
 // A las 12: 0
 // Nadie a las 13
 // Paciente 505: 8
+
+#include <iostream>
+#include <map>
+#include <optional>
+// El consultorio atiende una cita por hora, de las 8 a las 17 (la ultima
+// cita empieza a las 17). Disena la clase AgendaDelConsultorio, con un
+// atributo privado std::map<int, int> pacientePorHora (hora y numero de
+// paciente). Ningun metodo devuelve -1 ni 0 para decir "no hay": devuelven
+// std::nullopt. Metodos:
+// - std::optional<int> pacienteEn(int hora): el paciente de esa hora, o
+//   vacio si no hay cita (sin crear la hora en el map).
+// - std::optional<int> primeraLibreDesde(int hora): la primera hora libre
+//   desde hora (incluida) hasta las 17, o vacio si no hay ninguna. Si hora
+//   es menor que 8, empieza en 8.
+// - std::optional<int> agendar(int paciente, int desde): agenda al paciente
+//   en la primera hora libre desde desde, y devuelve esa hora; si no hay,
+//   devuelve vacio sin agendar nada.
+// - bool cancelar(int hora): si hay cita a esa hora la borra y devuelve
+//   true; si no, false.
+
+#include <iostream>
+#include <map>
+#include <optional>
+
+class AgendaDelConsultorio{
+    private:
+    std::map<int,int> pacientePorHora;
+    public:
+    std::optional<int> pacienteEn(int hora){
+        auto it=pacientePorHora.find(hora);
+        if(it!=pacientePorHora.end()){
+            return it->second;
+        }
+        return std::nullopt;
+    }
+
+    std::optional<int> primeraLibreDesde(int hora){
+        if(hora<8){
+            hora=8;
+        }
+        for(int i=hora;i<=17;i++){
+            if(pacientePorHora.find(i)==pacientePorHora.end()){
+                return i;
+            }
+        }
+        return std::nullopt;
+    }
+    std::optional<int> agendar(int paciente,int desde){
+    std::optional<int> hora=primeraLibreDesde(desde);
+
+        if(hora.has_value()){
+            pacientePorHora[*hora]=paciente;
+            return hora;
+        }
+        return std::nullopt;
+    }
+
+    bool cancelar(int hora){
+        auto it=pacientePorHora.find(hora);
+        if(it!=pacientePorHora.end()){
+            pacientePorHora.erase(it);
+            return true;
+        }
+        return false;
+    }
+};
+
+
+int main(){
+    AgendaDelConsultorio agenda;
+
+    std::optional<int> hora1=agenda.agendar(501,8);
+    std::optional<int> hora2=agenda.agendar(502,8);
+    std::optional<int> hora3=agenda.agendar(503,16);
+    std::optional<int> hora4=agenda.agendar(504,16);
+    std::optional<int> hora5=agenda.agendar(504,16);
+
+    if(hora1.has_value()){
+        std::cout<<"Paciente 501: "<<*hora1<<std::endl;
+    }else{
+        std::cout<<"Paciente 501: sin hora"<<std::endl;
+    }
+    if(hora2.has_value()){
+        std::cout<<"Paciente 502: "<<*hora2<<std::endl;
+    }else{
+        std::cout<<"Paciente 502: sin hora"<<std::endl;
+    }
+    if(hora3.has_value()){
+        std::cout<<"Paciente 503: "<<*hora3<<std::endl;
+    }else{
+        std::cout<<"Paciente 503: sin hora"<<std::endl;
+    }
+    if(hora4.has_value()){
+        std::cout<<"Paciente 504: "<<*hora4<<std::endl;
+    }else{
+        std::cout<<"Paciente 504: sin hora"<<std::endl;
+    }
+    if(hora5.has_value()){
+        std::cout<<"Paciente 504 otra vez: "<<*hora5<<std::endl;
+    }else{
+        std::cout<<"Paciente 504 otra vez: sin hora"<<std::endl;
+    }
+    std::cout<<"A las 9: "<<*agenda.pacienteEn(9)<<std::endl;
+    std::cout<<"A las 12: "<<agenda.pacienteEn(12).value_or(0)<<std::endl;
+    try{
+        std::cout<<agenda.pacienteEn(13).value()<<std::endl;
+    }
+    catch(const std::bad_optional_access&){
+        std::cout<<"Nadie a las 13"<<std::endl;
+    }
+    agenda.cancelar(8);
+    std::optional<int> hora6=agenda.agendar(505,7);
+    if(hora6.has_value()){
+        std::cout<<"Paciente 505: "<<*hora6<<std::endl;
+    }else{
+        std::cout<<"Paciente 505: sin hora"<<std::endl;
+    }
+    return 0;
+}

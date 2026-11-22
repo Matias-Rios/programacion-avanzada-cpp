@@ -31,18 +31,40 @@ public:
     }
     std::optional<int> anioDe(int codigo) {
         // TODO: si el codigo no esta, devuelve std::nullopt; si esta, su anio.
-        return std::nullopt;
+        auto it=anioPorCodigo.find(codigo);
+        if(it==anioPorCodigo.end()){
+            return std::nullopt;
+        }
+        return it->second;
     }
     std::optional<int> masAntiguo() {
         // TODO: devuelve el anio mas antiguo de todos los libros, o std::nullopt
         // si no hay libros.
-        return std::nullopt;
+        if (anioPorCodigo.empty()) {
+            return std::nullopt;
+        }
+        int anio_antiguo = anioPorCodigo.begin()->second;
+        for (auto par : anioPorCodigo) {
+            if (par.second < anio_antiguo) {
+                anio_antiguo = par.second;
+            }
+        }
+        return anio_antiguo;
     }
+
     std::optional<int> prestar(int codigo, int hoy) {
         // TODO: si el libro no existe o ya esta prestado, devuelve std::nullopt.
         // Si no, lo marca como prestado y devuelve el dia de devolucion,
         // hoy + 7.
-        return std::nullopt;
+        auto it=anioPorCodigo.find(codigo);
+        if(it == anioPorCodigo.end()){
+            return std::nullopt;
+        }
+        if(prestados.count(codigo)!=0){
+            return std::nullopt;
+        }
+        prestados.insert(codigo);
+        return hoy+7;
     }
 };
 
@@ -53,6 +75,7 @@ void imprimirPrestamo(std::optional<int> devolucion) {
         std::cout << "no disponible" << std::endl;
     }
 }
+
 
 int main() {
     Biblioteca biblioteca;

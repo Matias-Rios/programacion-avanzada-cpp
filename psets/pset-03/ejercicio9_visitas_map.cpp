@@ -24,24 +24,42 @@ private:
 public:
     void registrar(int sala) {
         // TODO: suma 1 a las visitas de esa sala (si no existe, empieza en 0).
+        visitasPorSala[sala]=visitasPorSala[sala]+1;
     }
     int visitasDe(int sala) {
         // TODO: si la sala no esta (count), devuelve 0 sin crearla; si esta,
         // devuelve sus visitas.
-        return 0;
+        if(visitasPorSala.count(sala)==0){
+            return 0;
+        }
+        return visitasPorSala[sala];
     }
     int cantidadDeSalas() {
         // TODO: devuelve cuantas salas distintas hay.
-        return 0;
+        return visitasPorSala.size();
     }
     void imprimir() {
         // TODO: recorre el map con un iterador (auto it = visitasPorSala.begin())
         // e imprime "Sala " << clave << ": " << valor, una por linea.
+        for(auto it=visitasPorSala.begin();it != visitasPorSala.end();it++){
+            std::cout<<"Sala "<<it->first<<": "<<it->second<<std::endl;
+        }
     }
     int masVisitada() {
         // TODO: devuelve la sala con mas visitas (en un empate, la de numero
         // menor), o -1 si no hay ninguna.
+    if (visitasPorSala.empty()) {
         return -1;
+    }
+    int salaMax = -1;
+    int maxVisitas = -1;
+    for (const auto& [sala, cantidad] : visitasPorSala) {
+        if (cantidad>maxVisitas) {
+            maxVisitas=cantidad;
+            salaMax=sala;
+        }
+    }
+    return salaMax;
     }
 };
 
