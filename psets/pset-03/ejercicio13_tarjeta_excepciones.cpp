@@ -32,7 +32,7 @@ public:
         if(monto<=0){
             throw std::invalid_argument("monto no positivo");
         }
-        monto=monto+saldo;
+        saldo=saldo+monto;
     }
     void pagar(double tarifa) {
         // TODO: si tarifa <= 0, lanza std::invalid_argument("tarifa no positiva").
@@ -42,9 +42,9 @@ public:
            throw std::invalid_argument("tarifa no positiva");
         }
         if(tarifa>saldo){
-           throw std::runtime_error("Saldo insuficientoe");
+           throw std::runtime_error("Saldo insuficiente");
         }
-        saldo-tarifa;
+        saldo=saldo-tarifa;
     }
     double getSaldo() {
         return saldo;
