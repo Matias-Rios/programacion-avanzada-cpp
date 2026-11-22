@@ -42,7 +42,7 @@ public:
            throw std::invalid_argument("tarifa no positiva");
         }
         if(tarifa>saldo){
-           throw std::runtime_error("Saldo insuficiente");
+           throw std::runtime_error("saldo insuficiente");
         }
         saldo=saldo-tarifa;
     }
